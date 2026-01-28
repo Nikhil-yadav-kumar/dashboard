@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Mood Tracker Dashboard</title>
+<!-- Fonts -->
+<!-- <link href="https://fonts.googleapis.com" rel="preconnect"/> -->
+<!-- <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/> -->
+<!-- <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&amp;display=swap" rel="stylesheet"/> -->
+<!-- <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/> -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#137fec",
+                        "background-light": "#f6f7f8",
+                        "background-dark": "#101922",
+                        "surface-dark": "#1c2b3a", 
+                        "surface-light": "#ffffff",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: {"DEFAULT": "0.5rem", "lg": "1rem", "xl": "1.5rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        body { font-family: 'Inter', sans-serif; }
+        /* Custom scrollbar for webkit */
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
+        .dark ::-webkit-scrollbar-thumb { background: #334155; }
+        ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+        .dark ::-webkit-scrollbar-thumb:hover { background: #475569; }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-white h-screen flex overflow-hidden selection:bg-primary/30">
+<!-- Sidebar Navigation -->
+<aside class="w-20 lg:w-64 h-full bg-surface-light dark:bg-[#111a22] border-r border-slate-200 dark:border-slate-800 flex flex-col flex-shrink-0 transition-all duration-300 z-20">
+<!-- Logo Area -->
+<div class="h-20 flex items-center justify-center lg:justify-start lg:px-6 gap-3 border-b border-transparent lg:border-slate-100 lg:dark:border-slate-800/50">
+<div class="bg-primary/10 p-2 rounded-xl shrink-0">
+<div class="size-8 rounded-full bg-cover bg-center shadow-inner" data-alt="MindfulAI Abstract Logo" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuARvivSmFZ2ceIbkxS3AJSMdJfhWI1hYtgTrxzQjIwU6gm4DF4adtdbsRWN_uuEk66eJ98v6GVEKNLBcwFaCoJQuT8lwvIi5UdHPomBlIvwhPNRJu80osnk7J2vkV_6A9ObXeCWg7zVl9Z31rcTJBK3xcrZQ5Bd_u9YC0JcTqP3FGcPPR2Z0RVa1c3-wNztAGdu0LTLK3zLPsVAscva5ei9NHUB7TBkVlW1bN3B9XZq7-o45h37Jl_J1Sdjsj-7GZMq4r7qxgzvyBg');"></div>
+</div>
+<div class="hidden lg:block">
+<h1 class="text-lg font-bold tracking-tight text-slate-900 dark:text-white">MindfulAI</h1>
+<p class="text-xs text-slate-500 dark:text-slate-400 font-medium">Virtual Companion</p>
+</div>
+</div>
+<!-- Navigation Links -->
+<nav class="flex-1 px-3 py-6 space-y-2 overflow-y-auto">
+<a class="flex items-center gap-3 px-3 py-3 rounded-xl bg-primary text-white shadow-lg shadow-primary/20 transition-all group relative" href="#">
+<span class="material-symbols-outlined shrink-0">dashboard</span>
+<span class="font-medium text-sm hidden lg:block whitespace-nowrap">Dashboard</span>
+<!-- Tooltip for collapsed state -->
+<div class="lg:hidden absolute left-14 bg-slate-800 text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 pointer-events-none transition-opacity z-50">Dashboard</div>
+</a>
+<a class="flex items-center gap-3 px-3 py-3 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800/50 text-slate-600 dark:text-slate-400 hover:text-primary transition-all group relative" href="#">
+<span class="material-symbols-outlined shrink-0 group-hover:text-primary">chat_bubble</span>
+<span class="font-medium text-sm hidden lg:block whitespace-nowrap">Chat Therapist</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-3 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800/50 text-slate-600 dark:text-slate-400 hover:text-primary transition-all group relative" href="#">
+<span class="material-symbols-outlined shrink-0 group-hover:text-primary">auto_stories</span>
+<span class="font-medium text-sm hidden lg:block whitespace-nowrap">Journal History</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-3 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800/50 text-slate-600 dark:text-slate-400 hover:text-primary transition-all group relative" href="#">
+<span class="material-symbols-outlined shrink-0 group-hover:text-primary">insights</span>
+<span class="font-medium text-sm hidden lg:block whitespace-nowrap">Analytics</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-3 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800/50 text-slate-600 dark:text-slate-400 hover:text-primary transition-all group relative" href="#">
+<span class="material-symbols-outlined shrink-0 group-hover:text-primary">settings</span>
+<span class="font-medium text-sm hidden lg:block whitespace-nowrap">Settings</span>
+</a>
+</nav>
+<!-- User Profile (Mini) -->
+<div class="p-4 border-t border-slate-200 dark:border-slate-800">
+<div class="flex items-center gap-3 p-2 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800/50 cursor-pointer transition-colors group">
+<div class="size-10 rounded-full bg-slate-200 dark:bg-slate-700 bg-cover bg-center shrink-0 border-2 border-transparent group-hover:border-primary transition-all" data-alt="Profile picture of Alex" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBH3RuaXtGlRhp0N-ookl02si2ISzib29WntF8EkPPkergxWJqZF6QIktnTj10mAcMoY_uvJxATT2aJNmrUC68EzEs3olNuPEtlg_iol514j7r_g0Am-c39SALV8xXawAYDA7IITbNmVN9hPOg2EH3ZQ9CtFg2mBPW81b42ZQ5TcwrdencpQ_PbK7x7IQurlpX8c_7zABKcVnux-8MVhQUdoyFVDoXUs5G8bcN_-Xmm8m6rW_0nnFjHyprXNjc6aQ_-I7Lj1IC9I_k');"></div>
+<div class="flex-1 min-w-0 hidden lg:block">
+<p class="text-sm font-bold text-slate-800 dark:text-slate-200 truncate">Alex Morgan</p>
+<p class="text-xs text-slate-500 dark:text-slate-400 truncate">Free Plan</p>
+</div>
+<span class="material-symbols-outlined text-slate-400 hidden lg:block">more_vert</span>
+</div>
+</div>
+</aside>
+<!-- Main Content Area -->
+<main class="flex-1 h-full overflow-y-auto bg-background-light dark:bg-background-dark scroll-smooth relative">
+<div class="max-w-[1280px] mx-auto p-4 md:p-8 flex flex-col gap-8">
+<!-- Page Heading & Actions -->
+<header class="flex flex-col md:flex-row md:items-end justify-between gap-4 pt-2">
+<div>
+<h2 class="text-3xl font-display font-black text-slate-900 dark:text-white mb-2 tracking-tight">Good evening, Alex</h2>
+<p class="text-slate-500 dark:text-slate-400 font-medium">Ready to check in with yourself today?</p>
+</div>
+<div class="flex gap-3">
+<button class="flex items-center gap-2 px-5 py-2.5 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-surface-dark hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors text-sm font-semibold shadow-sm">
+<span class="material-symbols-outlined text-[20px] text-slate-500 dark:text-slate-400">calendar_today</span>
+<span>This Week</span>
+</button>
+<button class="bg-primary hover:bg-blue-600 text-white px-6 py-2.5 rounded-lg text-sm font-bold shadow-lg shadow-primary/25 transition-all transform active:scale-95 flex items-center gap-2">
+<span class="material-symbols-outlined text-[20px]">add</span>
+                        Log New Mood
+                    </button>
+</div>
+</header>
+<!-- Quick Log Card -->
+<section class="bg-surface-light dark:bg-surface-dark p-6 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-800/60 relative overflow-hidden group">
+<!-- Background decorative gradient -->
+<div class="absolute -right-20 -top-20 size-64 bg-primary/5 rounded-full blur-3xl pointer-events-none"></div>
+<div class="flex flex-col lg:flex-row items-center gap-8 justify-between relative z-10">
+<div class="flex-1 w-full space-y-4">
+<div class="flex justify-between items-end">
+<label class="font-bold text-lg text-slate-700 dark:text-slate-200">How are you feeling right now?</label>
+<div class="flex items-center gap-2 bg-primary/10 px-3 py-1 rounded-full">
+<span class="text-primary font-bold text-sm">7.0</span>
+<span class="text-slate-400 text-xs uppercase font-bold tracking-wider">Good</span>
+</div>
+</div>
+<!-- Slider -->
+<div class="relative w-full h-3 bg-slate-100 dark:bg-slate-700/50 rounded-full cursor-pointer group/slider">
+<div class="absolute top-0 left-0 h-full bg-gradient-to-r from-blue-400 to-primary rounded-full transition-all duration-300" style="width: 70%"></div>
+<div class="absolute top-1/2 -translate-y-1/2 left-[70%] size-5 bg-white border-[3px] border-primary rounded-full shadow-md cursor-grab active:cursor-grabbing hover:scale-125 transition-transform"></div>
+</div>
+<div class="flex justify-between text-xs font-medium text-slate-400 uppercase tracking-wider">
+<span>Stressed</span>
+<span>Neutral</span>
+<span>Ecstatic</span>
+</div>
+</div>
+<div class="flex gap-6 items-center">
+<div class="h-12 w-px bg-slate-200 dark:bg-slate-700 hidden lg:block"></div>
+<div class="flex gap-3">
+<button class="p-3 rounded-2xl bg-slate-50 dark:bg-slate-800/50 hover:bg-red-50 dark:hover:bg-red-900/20 hover:text-red-500 text-slate-400 transition-all hover:scale-105" title="Sad">
+<span class="material-symbols-outlined text-[28px]">sentiment_dissatisfied</span>
+</button>
+<button class="p-3 rounded-2xl bg-slate-50 dark:bg-slate-800/50 hover:bg-orange-50 dark:hover:bg-orange-900/20 hover:text-orange-500 text-slate-400 transition-all hover:scale-105" title="Neutral">
+<span class="material-symbols-outlined text-[28px]">sentiment_neutral</span>
+</button>
+<button class="p-3 rounded-2xl bg-primary text-white shadow-lg shadow-primary/30 ring-4 ring-primary/20 transition-all hover:scale-105" title="Happy">
+<span class="material-symbols-outlined text-[28px]">sentiment_satisfied</span>
+</button>
+<button class="p-3 rounded-2xl bg-slate-50 dark:bg-slate-800/50 hover:bg-green-50 dark:hover:bg-green-900/20 hover:text-green-500 text-slate-400 transition-all hover:scale-105" title="Very Happy">
+<span class="material-symbols-outlined text-[28px]">sentiment_very_satisfied</span>
+</button>
+</div>
+</div>
+</div>
+</section>
+<!-- Stats Grid -->
+<section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+<!-- Stat Card 1 -->
+<div class="bg-surface-light dark:bg-surface-dark p-5 rounded-2xl border border-slate-200 dark:border-slate-800/60 shadow-sm hover:border-primary/30 transition-colors">
+<div class="flex items-center gap-2 text-slate-500 dark:text-slate-400 mb-3">
+<span class="material-symbols-outlined text-[20px]">local_fire_department</span>
+<span class="text-xs font-bold uppercase tracking-wider">Current Streak</span>
+</div>
+<div class="flex items-baseline gap-2">
+<p class="text-3xl font-black text-slate-900 dark:text-white">12</p>
+<p class="text-sm font-medium text-slate-500">Days</p>
+</div>
+<p class="text-emerald-500 text-xs font-bold flex items-center mt-2 bg-emerald-500/10 w-fit px-2 py-1 rounded">
+<span class="material-symbols-outlined text-[14px] mr-1">trending_up</span>
+                        +2 days
+                    </p>
+</div>
+<!-- Stat Card 2 -->
+<div class="bg-surface-light dark:bg-surface-dark p-5 rounded-2xl border border-slate-200 dark:border-slate-800/60 shadow-sm hover:border-primary/30 transition-colors">
+<div class="flex items-center gap-2 text-slate-500 dark:text-slate-400 mb-3">
+<span class="material-symbols-outlined text-[20px]">mood</span>
+<span class="text-xs font-bold uppercase tracking-wider">Avg Mood</span>
+</div>
+<div class="flex items-baseline gap-2">
+<p class="text-3xl font-black text-slate-900 dark:text-white">7.5</p>
+<p class="text-sm font-medium text-slate-500">/ 10</p>
+</div>
+<p class="text-emerald-500 text-xs font-bold flex items-center mt-2 bg-emerald-500/10 w-fit px-2 py-1 rounded">
+<span class="material-symbols-outlined text-[14px] mr-1">arrow_upward</span>
+                        +5% vs last week
+                    </p>
+</div>
+<!-- Stat Card 3 -->
+<div class="bg-surface-light dark:bg-surface-dark p-5 rounded-2xl border border-slate-200 dark:border-slate-800/60 shadow-sm hover:border-primary/30 transition-colors">
+<div class="flex items-center gap-2 text-slate-500 dark:text-slate-400 mb-3">
+<span class="material-symbols-outlined text-[20px]">edit_note</span>
+<span class="text-xs font-bold uppercase tracking-wider">Total Entries</span>
+</div>
+<div class="flex items-baseline gap-2">
+<p class="text-3xl font-black text-slate-900 dark:text-white">45</p>
+<p class="text-sm font-medium text-slate-500">logs</p>
+</div>
+<p class="text-primary text-xs font-bold flex items-center mt-2 bg-primary/10 w-fit px-2 py-1 rounded">
+                        Keep going!
+                    </p>
+</div>
+<!-- Stat Card 4 -->
+<div class="bg-surface-light dark:bg-surface-dark p-5 rounded-2xl border border-slate-200 dark:border-slate-800/60 shadow-sm hover:border-primary/30 transition-colors">
+<div class="flex items-center gap-2 text-slate-500 dark:text-slate-400 mb-3">
+<span class="material-symbols-outlined text-[20px]">psychology</span>
+<span class="text-xs font-bold uppercase tracking-wider">Top Emotion</span>
+</div>
+<div class="flex items-baseline gap-2">
+<p class="text-3xl font-black text-slate-900 dark:text-white">Calm</p>
+</div>
+<p class="text-slate-500 text-xs font-bold flex items-center mt-2 bg-slate-100 dark:bg-slate-800 w-fit px-2 py-1 rounded">
+                        30% of entries
+                    </p>
+</div>
+</section>
+<!-- Main Charts & Heatmap -->
+<section class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+<!-- Line Chart -->
+<div class="lg:col-span-2 bg-surface-light dark:bg-surface-dark p-6 rounded-2xl border border-slate-200 dark:border-slate-800/60 shadow-sm flex flex-col">
+<div class="flex justify-between items-center mb-8">
+<div>
+<h3 class="text-lg font-bold text-slate-900 dark:text-white">Emotional Trends</h3>
+<p class="text-xs text-slate-500 dark:text-slate-400 font-medium">Your mood fluctuation over time</p>
+</div>
+<div class="relative">
+<select class="appearance-none bg-slate-50 dark:bg-slate-800 text-sm font-medium border border-slate-200 dark:border-slate-700 rounded-lg pl-3 pr-8 py-2 text-slate-700 dark:text-slate-300 focus:ring-2 focus:ring-primary focus:border-transparent outline-none cursor-pointer">
+<option>Last 30 Days</option>
+<option>Last 7 Days</option>
+<option>This Year</option>
+</select>
+<span class="material-symbols-outlined absolute right-2 top-1/2 -translate-y-1/2 text-slate-500 pointer-events-none text-sm">expand_more</span>
+</div>
+</div>
+<div class="relative flex-1 min-h-[250px] w-full">
+<!-- SVG Chart -->
+<svg class="w-full h-full overflow-visible" preserveaspectratio="none" viewbox="0 0 800 250">
+<defs>
+<lineargradient id="chartGradient" x1="0" x2="0" y1="0" y2="1">
+<stop offset="0%" stop-color="#137fec" stop-opacity="0.2"></stop>
+<stop offset="100%" stop-color="#137fec" stop-opacity="0"></stop>
+</lineargradient>
+</defs>
+<!-- Grid lines -->
+<line class="text-slate-100 dark:text-slate-800/50" stroke="currentColor" stroke-width="1" x1="0" x2="800" y1="0" y2="0"></line>
+<line class="text-slate-100 dark:text-slate-800/50" stroke="currentColor" stroke-dasharray="4" stroke-width="1" x1="0" x2="800" y1="62.5" y2="62.5"></line>
+<line class="text-slate-100 dark:text-slate-800/50" stroke="currentColor" stroke-dasharray="4" stroke-width="1" x1="0" x2="800" y1="125" y2="125"></line>
+<line class="text-slate-100 dark:text-slate-800/50" stroke="currentColor" stroke-dasharray="4" stroke-width="1" x1="0" x2="800" y1="187.5" y2="187.5"></line>
+<line class="text-slate-200 dark:text-slate-700" stroke="currentColor" stroke-width="1" x1="0" x2="800" y1="250" y2="250"></line>
+<!-- Area -->
+<path d="M0,160 C50,150 100,180 150,120 C200,60 250,80 300,100 C350,120 400,50 450,70 C500,90 550,150 600,120 C650,90 700,30 750,50 L800,40 L800,250 L0,250 Z" fill="url(#chartGradient)"></path>
+<!-- Line -->
+<path d="M0,160 C50,150 100,180 150,120 C200,60 250,80 300,100 C350,120 400,50 450,70 C500,90 550,150 600,120 C650,90 700,30 750,50 L800,40" fill="none" stroke="#137fec" stroke-linecap="round" stroke-linejoin="round" stroke-width="3"></path>
+<!-- Interaction Points -->
+<circle class="fill-surface-light dark:fill-surface-dark stroke-primary hover:r-7 transition-all cursor-pointer" cx="150" cy="120" r="5" stroke-width="3"></circle>
+<circle class="fill-surface-light dark:fill-surface-dark stroke-primary hover:r-7 transition-all cursor-pointer" cx="450" cy="70" r="5" stroke-width="3"></circle>
+<circle class="fill-surface-light dark:fill-surface-dark stroke-primary hover:r-7 transition-all cursor-pointer" cx="600" cy="120" r="5" stroke-width="3"></circle>
+<circle class="fill-primary stroke-white dark:stroke-surface-dark hover:r-8 transition-all cursor-pointer shadow-lg" cx="750" cy="50" r="6" stroke-width="2"></circle>
+</svg>
+</div>
+<div class="flex justify-between mt-6 text-xs text-slate-400 font-semibold tracking-wider uppercase">
+<span>Wk 1</span>
+<span>Wk 2</span>
+<span>Wk 3</span>
+<span>Wk 4</span>
+</div>
+</div>
+<!-- Heatmap Calendar -->
+<div class="bg-surface-light dark:bg-surface-dark p-6 rounded-2xl border border-slate-200 dark:border-slate-800/60 shadow-sm flex flex-col">
+<div>
+<h3 class="text-lg font-bold text-slate-900 dark:text-white">Mood Heatmap</h3>
+<p class="text-xs text-slate-500 dark:text-slate-400 font-medium mb-6">Intensity by day</p>
+</div>
+<div class="flex-1 flex flex-col justify-center">
+<div class="grid grid-cols-7 gap-3 mb-3">
+<div class="text-center text-[10px] font-bold text-slate-400">M</div>
+<div class="text-center text-[10px] font-bold text-slate-400">T</div>
+<div class="text-center text-[10px] font-bold text-slate-400">W</div>
+<div class="text-center text-[10px] font-bold text-slate-400">T</div>
+<div class="text-center text-[10px] font-bold text-slate-400">F</div>
+<div class="text-center text-[10px] font-bold text-slate-400">S</div>
+<div class="text-center text-[10px] font-bold text-slate-400">S</div>
+</div>
+<div class="grid grid-cols-7 gap-3">
+<!-- Heatmap squares -->
+<!-- Row 1 -->
+<div class="aspect-square rounded-md bg-slate-100 dark:bg-slate-800/50" title="No Data"></div>
+<div class="aspect-square rounded-md bg-slate-100 dark:bg-slate-800/50" title="No Data"></div>
+<div class="aspect-square rounded-md bg-primary/20 hover:scale-110 transition-transform cursor-pointer" title="Score: 3"></div>
+<div class="aspect-square rounded-md bg-primary/40 hover:scale-110 transition-transform cursor-pointer" title="Score: 5"></div>
+<div class="aspect-square rounded-md bg-primary/60 hover:scale-110 transition-transform cursor-pointer" title="Score: 7"></div>
+<div class="aspect-square rounded-md bg-primary/80 hover:scale-110 transition-transform cursor-pointer" title="Score: 8"></div>
+<div class="aspect-square rounded-md bg-primary hover:scale-110 transition-transform cursor-pointer shadow shadow-primary/30" title="Score: 10"></div>
+<!-- Row 2 -->
+<div class="aspect-square rounded-md bg-primary/60 hover:scale-110 transition-transform cursor-pointer"></div>
+<div class="aspect-square rounded-md bg-primary/30 hover:scale-110 transition-transform cursor-pointer"></div>
+<div class="aspect-square rounded-md bg-primary/90 hover:scale-110 transition-transform cursor-pointer"></div>
+<div class="aspect-square rounded-md bg-primary hover:scale-110 transition-transform cursor-pointer shadow shadow-primary/30"></div>
+<div class="aspect-square rounded-md bg-primary/40 hover:scale-110 transition-transform cursor-pointer"></div>
+<div class="aspect-square rounded-md bg-slate-100 dark:bg-slate-800/50"></div>
+<div class="aspect-square rounded-md bg-primary/20 hover:scale-110 transition-transform cursor-pointer"></div>
+<!-- Row 3 -->
+<div class="aspect-square rounded-md bg-primary/50 hover:scale-110 transition-transform cursor-pointer"></div>
+<div class="aspect-square rounded-md bg-primary/70 hover:scale-110 transition-transform cursor-pointer"></div>
+<div class="aspect-square rounded-md bg-primary/80 hover:scale-110 transition-transform cursor-pointer"></div>
+<div class="aspect-square rounded-md bg-primary hover:scale-110 transition-transform cursor-pointer shadow shadow-primary/30"></div>
+<div class="aspect-square rounded-md bg-primary/30 hover:scale-110 transition-transform cursor-pointer"></div>
+<div class="aspect-square rounded-md bg-primary/20 hover:scale-110 transition-transform cursor-pointer"></div>
+<div class="aspect-square rounded-md bg-primary/50 hover:scale-110 transition-transform cursor-pointer"></div>
+<!-- Row 4 -->
+<div class="aspect-square rounded-md bg-primary/90 hover:scale-110 transition-transform cursor-pointer"></div>
+<div class="aspect-square rounded-md bg-primary/40 hover:scale-110 transition-transform cursor-pointer"></div>
+<div class="aspect-square rounded-md bg-primary/60 hover:scale-110 transition-transform cursor-pointer"></div>
+<div class="aspect-square rounded-md bg-primary/80 hover:scale-110 transition-transform cursor-pointer"></div>
+<div class="aspect-square rounded-md bg-primary/20 hover:scale-110 transition-transform cursor-pointer"></div>
+<div class="aspect-square rounded-md bg-slate-100 dark:bg-slate-800/50"></div>
+<div class="aspect-square rounded-md bg-primary/10 hover:scale-110 transition-transform cursor-pointer"></div>
+</div>
+</div>
+<div class="flex items-center gap-2 mt-6 justify-end text-[10px] font-bold uppercase text-slate-400">
+<span>Low</span>
+<div class="flex gap-1">
+<div class="size-2 rounded-sm bg-slate-100 dark:bg-slate-800"></div>
+<div class="size-2 rounded-sm bg-primary/40"></div>
+<div class="size-2 rounded-sm bg-primary/80"></div>
+<div class="size-2 rounded-sm bg-primary"></div>
+</div>
+<span>High</span>
+</div>
+</div>
+</section>
+<!-- Recent Entries -->
+<section class="mb-8">
+<div class="flex items-center justify-between mb-4">
+<h3 class="text-xl font-bold text-slate-900 dark:text-white">Recent Entries</h3>
+<a class="text-primary text-sm font-bold hover:underline" href="#">View All History</a>
+</div>
+<div class="bg-surface-light dark:bg-surface-dark rounded-2xl border border-slate-200 dark:border-slate-800/60 overflow-hidden shadow-sm">
+<div class="divide-y divide-slate-100 dark:divide-slate-800/60">
+<!-- Entry 1 -->
+<div class="p-5 hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors flex items-center gap-5 cursor-pointer group">
+<div class="size-12 shrink-0 rounded-xl bg-emerald-100 dark:bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 flex items-center justify-center border border-emerald-200 dark:border-emerald-500/20">
+<span class="material-symbols-outlined">sentiment_very_satisfied</span>
+</div>
+<div class="flex-1 min-w-0">
+<h4 class="text-sm font-bold text-slate-900 dark:text-white truncate">Feeling Productive &amp; Energetic</h4>
+<p class="text-sm text-slate-500 dark:text-slate-400 truncate mt-0.5">Finished the big project at work, felt a huge relief.</p>
+</div>
+<div class="text-right shrink-0">
+<div class="bg-slate-100 dark:bg-slate-800 px-2 py-1 rounded text-xs font-bold text-slate-600 dark:text-slate-300 mb-1 inline-block">8/10</div>
+<p class="text-xs text-slate-400 font-medium">2 hrs ago</p>
+</div>
+<span class="material-symbols-outlined text-slate-300 dark:text-slate-600 group-hover:text-primary transition-colors transform group-hover:translate-x-1">chevron_right</span>
+</div>
+<!-- Entry 2 -->
+<div class="p-5 hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors flex items-center gap-5 cursor-pointer group">
+<div class="size-12 shrink-0 rounded-xl bg-blue-100 dark:bg-blue-500/10 text-blue-600 dark:text-blue-400 flex items-center justify-center border border-blue-200 dark:border-blue-500/20">
+<span class="material-symbols-outlined">sentiment_satisfied</span>
+</div>
+<div class="flex-1 min-w-0">
+<h4 class="text-sm font-bold text-slate-900 dark:text-white truncate">Morning Reflection</h4>
+<p class="text-sm text-slate-500 dark:text-slate-400 truncate mt-0.5">Woke up a bit tired but did some meditation.</p>
+</div>
+<div class="text-right shrink-0">
+<div class="bg-slate-100 dark:bg-slate-800 px-2 py-1 rounded text-xs font-bold text-slate-600 dark:text-slate-300 mb-1 inline-block">6/10</div>
+<p class="text-xs text-slate-400 font-medium">Yesterday</p>
+</div>
+<span class="material-symbols-outlined text-slate-300 dark:text-slate-600 group-hover:text-primary transition-colors transform group-hover:translate-x-1">chevron_right</span>
+</div>
+<!-- Entry 3 -->
+<div class="p-5 hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors flex items-center gap-5 cursor-pointer group">
+<div class="size-12 shrink-0 rounded-xl bg-orange-100 dark:bg-orange-500/10 text-orange-600 dark:text-orange-400 flex items-center justify-center border border-orange-200 dark:border-orange-500/20">
+<span class="material-symbols-outlined">sentiment_neutral</span>
+</div>
+<div class="flex-1 min-w-0">
+<h4 class="text-sm font-bold text-slate-900 dark:text-white truncate">Anxious evening</h4>
+<p class="text-sm text-slate-500 dark:text-slate-400 truncate mt-0.5">Felt overwhelmed by upcoming deadlines.</p>
+</div>
+<div class="text-right shrink-0">
+<div class="bg-slate-100 dark:bg-slate-800 px-2 py-1 rounded text-xs font-bold text-slate-600 dark:text-slate-300 mb-1 inline-block">4/10</div>
+<p class="text-xs text-slate-400 font-medium">Oct 24</p>
+</div>
+<span class="material-symbols-outlined text-slate-300 dark:text-slate-600 group-hover:text-primary transition-colors transform group-hover:translate-x-1">chevron_right</span>
+</div>
+</div>
+</div>
+</section>
+</div>
+</main>
+</body></html>
